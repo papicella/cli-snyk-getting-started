@@ -21,6 +21,8 @@ $ snyk --version
 
 ![alt tag](https://i.ibb.co/wYT04Z1/getting-started-1.png)
 
+In these examples the ORG = "**getting-started-cli**"
+
 ## Snyk Open Source Demos
 
 First let's clone the following repo we will use this repo in the examples. You can use your own code if you like. be sure to perform a build of the code, in this example it's a java maven project so you would run "mvn package" for example. Snyk Open Source supports the following programming languages, build tools, and package managers
@@ -162,14 +164,37 @@ $ snyk test --json
 $ snyk test --sarif
 ```
 
-Send results to Snyk App UI
+### Send results to Snyk App UI
+
+To send results to Snyk App we use the monitor command as showb below:
+
+[Snyk Monitor CLI Command](https://docs.snyk.io/snyk-cli/commands/monitor)
+
+Run a command as follows this time we will use an ORG name to target the org we wish to send the results to
+
+- Run "**snyk monitor --all-projects --org=getting-started-cli**"
+
+```shell
+$ snyk monitor --all-projects --org=getting-started-cli
+
+Monitoring /Users/pasapicella/snyk/SE/getting-started/snyk-boot-web (com.example:snyk-boot-web)...
+
+Explore this snapshot at https://app.snyk.io/org/getting-started-cli/project/3ec9514f-878c-496f-8458-0c459779bd25/history/e520c99b-8d11-4c3d-8856-afa8388ee0d7
+
+Notifications about newly disclosed issues related to these dependencies will be emailed to you.
+```
+
+![alt tag](https://i.ibb.co/XpZKZdr/getting-started-3.png)
+
+### Ignore all H2 vulnerabilities
+
+At some point you will need to ignore vulnerabilities
+
+### Separate results by branch/version
 
 
-Ignore all H2 vulnerabilities
+### Finding Log4J issue by CVE using JQ filter
 
-Separate results by branch/version
-
-Finding Log4J issue by CVE using JQ filter
 
 ## Dockerfile scanning
 
