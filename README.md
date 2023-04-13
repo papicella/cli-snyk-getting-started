@@ -25,7 +25,7 @@ $ snyk --version
 
 First let's clone the following repo we will use this repo in the examples. You can use your own code if you like. be sure to perform a build of the code, in this example it's a java maven project so you would run "mvn package" for example. Snyk Open Source supports the following programming languages, build tools, and package managers
 
-https://docs.snyk.io/scan-application-code/snyk-open-source/snyk-open-source-supported-languages-and-package-managers
+[Snyk Open Source - supported languages and package managers](https://github.com/papicella/cli-snyk-getting-started)
 
 - Clone the repo as shown below
 
@@ -40,15 +40,128 @@ Receiving objects: 100% (217/217), 95.16 KiB | 2.38 MiB/s, done.
 Resolving deltas: 100% (84/84), done.
 ```
 
-Display all issues
+_Note: change into the "**snyk-boot-web**" folder before running the next series of commands_ 
 
-Filter issues based on severity threshold
+### Display all issues
 
-Output results to HTML
+- Run the "**snyk test**" command as shown below
 
-Output Results to JSON or SARIF
+```shell
+snyk test
+
+Testing /Users/pasapicella/snyk/SE/getting-started/snyk-boot-web...
+
+Tested 40 dependencies for known issues, found 34 issues, 34 vulnerable paths.
+
+
+Issues to fix by upgrading:
+
+  Upgrade com.h2database:h2@1.4.200 to com.h2database:h2@2.0.202 to fix
+
+
+  Upgrade org.apache.logging.log4j:log4j-core@2.15.0 to org.apache.logging.log4j:log4j-core@2.17.1 to fix
+  ✗ Arbitrary Code Execution [Medium Severity][https://security.snyk.io/vuln/SNYK-JAVA-ORGAPACHELOGGINGLOG4J-2327339] in org.apache.logging.log4j:log4j-core@2.15.0
+    introduced by org.apache.logging.log4j:log4j-core@2.15.0
+  ✗ Denial of Service (DoS) [High Severity][https://security.snyk.io/vuln/SNYK-JAVA-ORGAPACHELOGGINGLOG4J-2321524] in org.apache.logging.log4j:log4j-core@2.15.0
+    introduced by org.apache.logging.log4j:log4j-core@2.15.0
+  ✗ Remote Code Execution (RCE) [Critical Severity][https://security.snyk.io/vuln/SNYK-JAVA-ORGAPACHELOGGINGLOG4J-2320014] in org.apache.logging.log4j:log4j-core@2.15.0
+    introduced by org.apache.logging.log4j:log4j-core@2.15.0
+  
+  ...
+  
+  Issues with no direct upgrade or patch:
+  ✗ Arbitrary Code Execution [Medium Severity][https://security.snyk.io/vuln/SNYK-JAVA-ORGYAML-3152153] in org.yaml:snakeyaml@1.26
+    introduced by org.springframework.boot:spring-boot-starter-web@2.3.10.RELEASE > org.springframework.boot:spring-boot-starter@2.3.10.RELEASE > org.yaml:snakeyaml@1.26
+  This issue was fixed in versions: 2.0
+
+
+License issues:
+
+  ✗ Dual license: MPL-2.0, EPL-1.0 (new) [Medium Severity][https://snyk.io/vuln/snyk:lic:maven:com.h2database:h2:(MPL-2.0_OR_EPL-1.0)] in com.h2database:h2@1.4.200
+    introduced by com.h2database:h2@1.4.200
+
+  ✗ EPL-1.0 OR LGPL-2.1 license (new) [Medium Severity][https://snyk.io/vuln/snyk:lic:maven:ch.qos.logback:logback-core:EPL-1.0_OR_LGPL-2.1] in ch.qos.logback:logback-core@1.2.3
+    introduced by org.springframework.boot:spring-boot-starter-web@2.3.10.RELEASE > org.springframework.boot:spring-boot-starter@2.3.10.RELEASE > org.springframework.boot:spring-boot-starter-logging@2.3.10.RELEASE > ch.qos.logback:logback-classic@1.2.3 > ch.qos.logback:logback-core@1.2.3
+
+  ✗ EPL-1.0 OR LGPL-2.1 license (new) [Medium Severity][https://snyk.io/vuln/snyk:lic:maven:ch.qos.logback:logback-classic:EPL-1.0_OR_LGPL-2.1] in ch.qos.logback:logback-classic@1.2.3
+    introduced by org.springframework.boot:spring-boot-starter-web@2.3.10.RELEASE > org.springframework.boot:spring-boot-starter@2.3.10.RELEASE > org.springframework.boot:spring-boot-starter-logging@2.3.10.RELEASE > ch.qos.logback:logback-classic@1.2.3
+
+
+
+Organization:      apples-demo
+Package manager:   maven
+Target file:       pom.xml
+Project name:      com.example:snyk-boot-web
+Open source:       no
+Project path:      /Users/pasapicella/snyk/SE/getting-started/snyk-boot-web
+Licenses:          enabled
+```
+
+### Filter issues based on severity threshold
+
+To improve control over your tests, you can use the --severity-threshold option for the snyk test command with one of the supported levels: low|medium|high|critical. With this option, only vulnerabilities of the specified level or higher are reported
+
+[Severity thresholds for CLI tests](https://docs.snyk.io/snyk-cli/test-for-vulnerabilities/set-severity-thresholds-for-cli-tests)
+
+- Run the "**snyk test --severity-threshold=critical**" command as shown below
+
+```shell
+$ snyk test --severity-threshold=critical
+
+Testing /Users/pasapicella/snyk/demos/languages-code-demos/JavaScript/goof...
+
+Tested 564 dependencies for known issues, found 2 issues, 2 vulnerable paths.
+
+
+Issues to fix by upgrading:
+
+  Upgrade adm-zip@0.4.7 to adm-zip@0.4.11 to fix
+  ✗ Arbitrary File Write via Archive Extraction (Zip Slip) [Critical Severity][https://security.snyk.io/vuln/npm:adm-zip:20180415] in adm-zip@0.4.7
+    introduced by adm-zip@0.4.7
+
+
+Issues with no direct upgrade or patch:
+  ✗ Prototype Pollution [Critical Severity][https://security.snyk.io/vuln/SNYK-JS-HANDLEBARS-534988] in handlebars@4.0.11
+    introduced by tap@11.1.5 > nyc@11.9.0 > istanbul-reports@1.4.0 > handlebars@4.0.11
+  This issue was fixed in versions: 3.0.8, 4.5.3
+
+
+
+Organization:      apples-demo
+Package manager:   npm
+Target file:       package-lock.json
+Project name:      goof
+Open source:       no
+Project path:      /Users/pasapicella/snyk/demos/languages-code-demos/JavaScript/goof
+Local Snyk policy: found
+Licenses:          enabled
+```
+
+### Output results to HTML
+
+First, Install the Snyk JSON to HTML Mapper using npm:
+
+[Snyk JSON to HTML Mapper](https://github.com/snyk/snyk-to-html)
+
+- Run a command as follows and then open the resulting html file "**snyk test --json | snyk-to-html -o results.html**"
+
+```shell
+$ snyk test --json | snyk-to-html -o results.html
+Vulnerability snapshot saved at results.html
+```
+
+### Output Results to JSON or SARIF
+
+Run either of the following commands:
+
+```shell
+$ snyk test --json
+
+$ snyk test --sarif
+```
 
 Send results to Snyk App UI
+
 
 Ignore all H2 vulnerabilities
 
