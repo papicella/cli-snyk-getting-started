@@ -275,6 +275,38 @@ Notifications about newly disclosed issues related to these dependencies will be
 
 ### Separate results by branch/version
 
+Your project may have multiple states which you want to monitor separately, for example, branches, releases, or deployments. You can use the --target-reference option to separate projects into these specific groupings.
+--target-reference takes any text so you can combine it with a command to automatically set it to a value.
+
+[Group projects for monitoring](https://docs.snyk.io/snyk-cli/test-for-vulnerabilities/grouping-projects-by-branch-or-version)
+
+- Run a command as follows "snyk monitor --target-reference="$(git branch --show-current)" --all-projects --org=getting-started-cli --remote-repo-url='MY_WEB_APP'"
+
+```shell
+$ snyk monitor --target-reference="$(git branch --show-current)" --all-projects --org=getting-started-cli --remote-repo-url='MY_WEB_APP'
+
+Monitoring /Users/pasapicella/snyk/SE/getting-started/snyk-boot-web (com.example:snyk-boot-web)...
+
+Explore this snapshot at https://app.snyk.io/org/getting-started-cli/project/9da2a85c-daf4-4ca0-b69e-d0cf83937778/history/9cfed54f-5957-40c7-a8b0-aaadf0de98e5
+
+Notifications about newly disclosed issues related to these dependencies will be emailed to you.
+```
+
+- Now run a command and for the demo only lets hard code the new branch name for now to see how this is displayed in the UI
+
+```shell
+$ snyk monitor --target-reference="release2.0" --all-projects --org=getting-started-cli --remote-repo-url='MY_WEB_APP'
+
+Monitoring /Users/pasapicella/snyk/SE/getting-started/snyk-boot-web (com.example:snyk-boot-web)...
+
+Explore this snapshot at https://app.snyk.io/org/getting-started-cli/project/19532c2e-8396-48f3-b951-42058b4d55c7/history/d65ad0cc-566a-4597-b21c-50f5a67e0143
+
+Notifications about newly disclosed issues related to these dependencies will be emailed to you.
+```
+
+Snyk App should show the following using your --target-reference names
+
+![alt tag](https://i.ibb.co/RggrPMR/getting-started-6.png)
 
 ### Finding Log4J issue by CVE using JQ filter
 
