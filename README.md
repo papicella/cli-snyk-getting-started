@@ -150,6 +150,8 @@ $ snyk test --json | snyk-to-html -o results.html
 Vulnerability snapshot saved at results.html
 ```
 
+![alt tag](https://i.ibb.co/vJF8Grg/getting-started-2.png)
+
 ### Output Results to JSON or SARIF
 
 Run either of the following commands:
