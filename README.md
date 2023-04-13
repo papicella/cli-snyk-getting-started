@@ -188,7 +188,90 @@ Notifications about newly disclosed issues related to these dependencies will be
 
 ### Ignore all H2 vulnerabilities
 
-At some point you will need to ignore vulnerabilities
+At some point you will need to ignore vulnerabilities in this example lets ignore mall H2 vulnerabilities.
+
+- First lets just show the h2 vulnerabilities as per a command as follows. 
+
+```shell
+$ snyk test --org=getting-started-cli | grep h2
+  Upgrade com.h2database:h2@1.4.200 to com.h2database:h2@2.1.210 to fix
+  ✗ Remote Code Execution (RCE) [High Severity][https://security.snyk.io/vuln/SNYK-JAVA-COMH2DATABASE-2331071] in com.h2database:h2@1.4.200
+    introduced by com.h2database:h2@1.4.200
+  ✗ XML External Entity (XXE) Injection [High Severity][https://security.snyk.io/vuln/SNYK-JAVA-COMH2DATABASE-1769238] in com.h2database:h2@1.4.200
+    introduced by com.h2database:h2@1.4.200
+  ✗ Remote Code Execution (RCE) [Critical Severity][https://security.snyk.io/vuln/SNYK-JAVA-COMH2DATABASE-2348247] in com.h2database:h2@1.4.200
+    introduced by com.h2database:h2@1.4.200
+  ✗ Information Exposure [Medium Severity][https://security.snyk.io/vuln/SNYK-JAVA-COMH2DATABASE-3146851] in com.h2database:h2@1.4.200
+    introduced by com.h2database:h2@1.4.200
+  ✗ Remote Code Execution (RCE) [High Severity][https://security.snyk.io/vuln/SNYK-JAVA-COMH2DATABASE-31685] in com.h2database:h2@1.4.200
+    introduced by com.h2database:h2@1.4.200
+  ✗ Dual license: MPL-2.0, EPL-1.0 (new) [Medium Severity][https://snyk.io/vuln/snyk:lic:maven:com.h2database:h2:(MPL-2.0_OR_EPL-1.0)] in com.h2database:h2@1.4.200
+    introduced by com.h2database:h2@1.4.200
+```
+
+Now we see we have 5 H2 library vulnerabilities and 1 license issue. Lets go ahead and create a local "**.snyk**" file that will ignore all 5 H2 library vulnerabilities
+
+- Create a file in the root folder called "**.snyk**" with contents as follows
+
+```shell
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.0
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JAVA-COMH2DATABASE-2331071:
+    - '*':
+        reason: testing cli ignores
+        expires: 2028-04-01T00:00:00.000Z
+        created: 2023-03-06T05:15:14.233Z
+  SNYK-JAVA-COMH2DATABASE-1769238:
+    - '*':
+        reason: testing cli ignores
+        expires: 2028-04-01T00:00:00.000Z
+        created: 2023-03-06T05:20:11.968Z
+  SNYK-JAVA-COMH2DATABASE-2348247:
+    - '*':
+        reason: testing cli ignores
+        expires: 2028-04-01T00:00:00.000Z
+        created: 2023-03-06T05:20:31.046Z
+  SNYK-JAVA-COMH2DATABASE-3146851:
+    - '*':
+        reason: testing cli ignores
+        expires: 2028-04-01T00:00:00.000Z
+        created: 2023-03-06T05:21:13.757Z
+  SNYK-JAVA-COMH2DATABASE-31685:
+    - '*':
+        reason: testing cli ignores
+        expires: 2028-04-01T00:00:00.000Z
+        created: 2023-03-06T05:21:35.203Z
+patch: {}
+```
+
+- This time let's run the same command and see those H2 issues have been ignored and are not displayed this time and only the license issue is shown.
+
+_Note: You can also apply a policy file by path as follows "**snyk test --org=getting-started-cli --policy-path=./.snyk | grep h2**" but by default if a ".snyk" file exists in current directory it's not needed_
+
+```shell
+snyk test --org=getting-started-cli | grep h2
+  Upgrade com.h2database:h2@1.4.200 to com.h2database:h2@2.0.202 to fix
+  ✗ Dual license: MPL-2.0, EPL-1.0 (new) [Medium Severity][https://snyk.io/vuln/snyk:lic:maven:com.h2database:h2:(MPL-2.0_OR_EPL-1.0)] in com.h2database:h2@1.4.200
+    introduced by com.h2database:h2@1.4.200
+```
+
+- Finally, lets send the results to Snyk APP UI and confirm our H2 vulns have been ignored as we requested
+
+```shell
+$ snyk monitor --project-name="snyk-boot-web-h2-ignores" --org=getting-started-cli --policy-path=./.snyk
+
+Monitoring /Users/pasapicella/snyk/SE/getting-started/snyk-boot-web (com.example:snyk-boot-web)...
+
+Explore this snapshot at https://app.snyk.io/org/getting-started-cli/project/b17a3ad0-9bd1-4ead-8b2d-82a7949669a7/history/0ba99ab0-6510-49df-8009-ac1d7c070a89
+
+Notifications about newly disclosed issues related to these dependencies will be emailed to you.
+```
+
+![alt tag](https://i.ibb.co/qgTcQz5/getting-started-5.png)
+
+![alt tag](https://i.ibb.co/XkRV6q6/getting-started-4.png)
 
 ### Separate results by branch/version
 
