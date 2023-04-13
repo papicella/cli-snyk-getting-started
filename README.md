@@ -48,6 +48,21 @@ Output results to HTML
 
 Output Results to JSON or SARIF
 
+Send results to Snyk App UI
+
+Ignore all H2 vulnerabilities
+
+Separate results by branch/version
+
+Finding Log4J issue by CVE using JQ filter
+
+## Dockerfile scanning
+
+Scanning a Dockerfile from the CLI
+
+Uploading the results of a Dockerfile scann  to Snyk App
+
+
 
 
 <hr />
