@@ -23,7 +23,9 @@ $ snyk --version
 
 ## Snyk Open Source Demos
 
-First let's clone the following repo we will use this repo in the examples. You can use your own code if you like
+First let's clone the following repo we will use this repo in the examples. You can use your own code if you like. be sure to perform a build of the code, in this example it's a java maven project so you would run "mvn package" for example. Snyk Open Source supports the following programming languages, build tools, and package managers
+
+https://docs.snyk.io/scan-application-code/snyk-open-source/snyk-open-source-supported-languages-and-package-managers
 
 - Clone the repo as shown below
 
@@ -37,6 +39,16 @@ remote: Total 217 (delta 10), reused 25 (delta 5), pack-reused 183
 Receiving objects: 100% (217/217), 95.16 KiB | 2.38 MiB/s, done.
 Resolving deltas: 100% (84/84), done.
 ```
+
+Display all issues
+
+Filter issues based on severity threshold
+
+Output results to HTML
+
+Output Results to JSON or SARIF
+
+
 
 <hr />
 Pas Apicella [pas at snyk.io] is a Principal Solution Engineer at Snyk APJ
