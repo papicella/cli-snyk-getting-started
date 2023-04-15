@@ -490,7 +490,7 @@ Notifications about newly disclosed issues related to these dependencies will be
 
 ## Snyk Container demos
 
-The next two examples show how to run a container test and monitor. You can add ignores, add projects tags as well as set severity-threshold much like open-source scans as detailed below
+The next two examples show how to run a container test and monitor. You can add ignores, add projects tags, output to sarif/html/JSON, as well as set severity-threshold much like open-source scans as detailed below
 
 [Snyk Container test options](https://docs.snyk.io/snyk-cli/commands/container-test)
 
