@@ -648,7 +648,7 @@ Summary:
   2 [High]
 ```
 
-_Note: sarif, JSON and HTML output is also available with container scanning like open-source scans allow_
+_Note: sarif, JSON and HTML output is also available with code SAST scanning like open-source scans allow_
 
 ### Converting a code scan to HTML
 
@@ -663,7 +663,133 @@ Vulnerability snapshot saved at snyk-boot-web-sast-result.html
 
 ## Snyk IaC demos
 
-TODO://
+### Run an IaC scan of a terraform template
+
+- Let's start by running an IaC scan using a command as follows "**snyk iac test ./terraform/main.tf**"
+
+```shell
+$ snyk iac test ./terraform/main.tf
+
+Snyk Infrastructure as Code
+
+✔ Test completed.
+
+Issues
+
+Low Severity Issues: 3
+
+  [Low] S3 bucket versioning disabled
+  Info:    S3 bucket versioning is disabled. Changes or deletion of objects will
+           not be reversible
+  Rule:    https://snyk.io/security-rules/SNYK-CC-TF-124
+  Path:    resource > aws_s3_bucket[s3_bucket_myapp] > versioning > enabled
+  File:    ./terraform/main.tf
+  Resolve: For AWS provider < v4.0.0, set `versioning.enabled` attribute to
+           `true`. For AWS provider >= v4.0.0, add aws_s3_bucket_versioning
+           resource.
+
+  [Low] S3 bucket MFA delete control disabled
+  Info:    S3 bucket will not enforce MFA login on delete requests. Object could
+           be deleted without stronger MFA authorization
+  Rule:    https://snyk.io/security-rules/SNYK-CC-TF-127
+  Path:    resource > aws_s3_bucket[s3_bucket_myapp] > versioning > mfa_delete
+  File:    ./terraform/main.tf
+  Resolve: Follow instructions in `https://docs.aws.amazon.com/AmazonS3/latest/u
+           serguide/MultiFactorAuthenticationDelete.html` to manually configure
+           the MFA setting. For AWS provider < v4.0.0 set
+           `versioning.mfa_delete` attribute to `true` in aws_s3_bucket
+           resource. For AWS provider >= v4.0.0 set
+           'versioning_configuration.mfa_delete` attribute to `Enabled`. The
+           terraform change is required to reflect the setting in the state file
+
+  [Low] S3 server access logging is disabled
+  Info:    The s3 access logs will not be collected. There will be no audit
+           trail of access to s3 objects
+  Rule:    https://snyk.io/security-rules/SNYK-CC-TF-45
+  Path:    input > resource > aws_s3_bucket[s3_bucket_myapp] > logging
+  File:    ./terraform/main.tf
+  Resolve: For AWS provider < v4.0.0, add `logging` block attribute. For AWS
+           provider >= v4.0.0, add aws_s3_bucket_logging resource.
+
+Medium Severity Issues: 1
+
+  [Medium] Non-encrypted S3 Bucket
+  Info:    Non-encrypted S3 Bucket. A non-encrypted S3 bucket increases the
+           likelihood of unintentional data exposure
+  Rule:    https://snyk.io/security-rules/SNYK-CC-TF-4
+  Path:    input > resource > aws_s3_bucket[s3_bucket_myapp]
+  File:    ./terraform/main.tf
+  Resolve: For AWS provider < v4.0.0, set `server_side_encryption_configuration`
+           block attribute. For AWS provider >= v4.0.0 add
+           aws_s3_bucket_server_side_encryption_configuration resource.
+
+High Severity Issues: 1
+
+  [High] S3 block public ACLs control is disabled
+  Info:    Bucket does not prevent creation of public ACLs. Anyone who can
+           manage bucket's ACLs will be able to grant public access to the
+           bucket
+  Rule:    https://snyk.io/security-rules/SNYK-CC-TF-95
+  Path:    resource > aws_s3_bucket[s3_bucket_myapp]
+  File:    ./terraform/main.tf
+  Resolve: Set the `aws_s3_bucket_public_access_block` `block_public_acls` field
+           to true.
+
+-------------------------------------------------------
+
+Test Summary
+
+  Organization: apples-demo
+  Project name: papicella/snyk-boot-web
+
+✔ Files without issues: 0
+✗ Files with issues: 1
+  Ignored issues: 0
+  Total issues: 5 [ 0 critical, 1 high, 1 medium, 3 low ]
+
+-------------------------------------------------------
+
+Tip
+
+  New: Share your test results in the Snyk Web UI with the option --report
+```
+
+### Sendf a report of an IaC scan of a terraform template to Snyk App UI
+
+- Run a command as follows "snyk iac test ./terraform/main.tf --report --org=getting-started-cli"
+
+```shell
+$ snyk iac test ./terraform/main.tf --report --org=getting-started-cli
+
+Snyk Infrastructure as Code
+
+✔ Test completed.
+
+...
+
+-------------------------------------------------------
+
+Test Summary
+
+  Organization: getting-started-cli
+  Project name: papicella/snyk-boot-web
+
+✔ Files without issues: 0
+✗ Files with issues: 1
+  Ignored issues: 0
+  Total issues: 5 [ 0 critical, 1 high, 1 medium, 3 low ]
+
+-------------------------------------------------------
+
+Report Complete
+
+  Your test results are available at: https://snyk.io/org/getting-started-cli/projects
+  under the name: papicella/snyk-boot-web
+```
+
+![alt tag](https://i.ibb.co/zst1cCH/getting-started-10.png)
+
+_Note: sarif, JSON and HTML output is also available with IaC scanning like open-source scans allow_
 
 <hr />
 Pas Apicella [pas at snyk.io] is a Principal Solution Engineer at Snyk APJ
