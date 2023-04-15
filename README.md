@@ -484,13 +484,13 @@ Notifications about newly disclosed issues related to these dependencies will be
 
 ## Snyk Container demos
 
-The next two examples show how to run a container test and monitor,. You can add ignores, add projects tags as well as set severity-threshold much like open-source scans as detailed below
+The next two examples show how to run a container test and monitor. You can add ignores, add projects tags as well as set severity-threshold much like open-source scans as detailed below
 
 [Snyk Container test options](https://docs.snyk.io/snyk-cli/commands/container-test)
 
 ### Running a container test
 
-- Run a test using a conmand as follows "**snyk container test pasapples/snyk-boot-web:v1**"
+- Run a test using a command as follows "**snyk container test pasapples/snyk-boot-web:v1**"
 
 ```shell
 
@@ -616,7 +616,50 @@ _Note: sarif, JSON and HTML output is also available with container scanning lik
 
 ## Snyk Code demos
 
-TODO://
+### Running a code scan
+
+Running a SAST code scan is don eusing a command as follows "**snyk code test**" make sure your organization you connect to has Snyk Code enabled.
+
+_Note: The ability to upload results from the CLI is currently not available but is coming soon_
+
+```shell
+$ snyk code test
+
+Testing /Users/pasapicella/snyk/SE/getting-started/snyk-boot-web ...
+
+ ✗ [High] Use of Hardcoded, Security-relevant Constants
+   Path: src/main/java/com/example/snykbootweb/DatabaseService.java, line 8
+   Info: Avoid hardcoding values that are meant to be secret. Found hardcoded secret.
+
+ ✗ [High] SQL Injection
+   Path: src/main/java/com/example/snykbootweb/jdbc/CustomerRest.java, line 29
+   Info: Unsanitized input from the request URL flows into query, where it is used in an SQL query. This may result in an SQL Injection vulnerability.
+
+
+✔ Test completed
+
+Organization:      apples-demo
+Test type:         Static code analysis
+Project path:      /Users/pasapicella/snyk/SE/getting-started/snyk-boot-web
+
+Summary:
+
+  2 Code issues found
+  2 [High]
+```
+
+_Note: sarif, JSON and HTML output is also available with container scanning like open-source scans allow_
+
+### Converting a code scan to HTML
+
+- Run the following commands to generate a HTML file for the code scan results
+
+```shell
+$ snyk code test --json | snyk-to-html -o snyk-boot-web-sast-result.html
+Vulnerability snapshot saved at snyk-boot-web-sast-result.html
+```
+
+![alt tag](https://i.ibb.co/107GNLv/getting-started-9.png)
 
 ## Snyk IaC demos
 
