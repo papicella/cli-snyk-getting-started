@@ -192,7 +192,7 @@ Notifications about newly disclosed issues related to these dependencies will be
 
 At some point you will need to ignore vulnerabilities in this example lets ignore mall H2 vulnerabilities.
 
-- First lets just show the h2 vulnerabilities as per a command as follows. 
+- First lets just show the h2 vulnerabilities as per a command as follows "**snyk test --org=getting-started-cli | grep h2**" 
 
 ```shell
 $ snyk test --org=getting-started-cli | grep h2
@@ -211,7 +211,7 @@ $ snyk test --org=getting-started-cli | grep h2
     introduced by com.h2database:h2@1.4.200
 ```
 
-Now we see we have 5 H2 library vulnerabilities and 1 license issue. Lets go ahead and create a local "**.snyk**" file that will ignore all 5 H2 library vulnerabilities
+Now we see we have 5 H2 library vulnerabilities and 1 license issue. Let's go ahead and create a local "**.snyk**" file that will ignore all 5 H2 library vulnerabilities
 
 - Create a file in the root folder called "**.snyk**" with contents as follows
 
@@ -247,6 +247,10 @@ ignore:
         created: 2023-03-06T05:21:35.203Z
 patch: {}
 ```
+
+_Note: You can generate this file using "**snyk ignore**" CLI option as described below_
+
+[Ignore vulnerabilities using Snyk CLI](https://docs.snyk.io/snyk-cli/test-for-vulnerabilities/ignore-vulnerabilities-using-snyk-cli)
 
 - This time let's run the same command and see those H2 issues have been ignored and are not displayed this time and only the license issue is shown.
 
