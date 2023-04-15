@@ -280,7 +280,7 @@ Your project may have multiple states which you want to monitor separately, for 
 
 [Group projects for monitoring](https://docs.snyk.io/snyk-cli/test-for-vulnerabilities/grouping-projects-by-branch-or-version)
 
-- Run a command as follows "snyk monitor --target-reference="$(git branch --show-current)" --all-projects --org=getting-started-cli --remote-repo-url='MY_WEB_APP'"
+- Run a command as follows "**snyk monitor --target-reference="$(git branch --show-current)" --all-projects --org=getting-started-cli --remote-repo-url='MY_WEB_APP'**"
 
 ```shell
 $ snyk monitor --target-reference="$(git branch --show-current)" --all-projects --org=getting-started-cli --remote-repo-url='MY_WEB_APP'
@@ -292,7 +292,7 @@ Explore this snapshot at https://app.snyk.io/org/getting-started-cli/project/9da
 Notifications about newly disclosed issues related to these dependencies will be emailed to you.
 ```
 
-- Now run a command and for the demo only lets hard code the new branch name for now to see how this is displayed in the UI
+- Now run a command and for the demo only lets hard code the new branch name for now to see how this is displayed in the UI, "**snyk monitor --target-reference="release2.0" --all-projects --org=getting-started-cli --remote-repo-url='MY_WEB_APP'**"
 
 ```shell
 $ snyk monitor --target-reference="release2.0" --all-projects --org=getting-started-cli --remote-repo-url='MY_WEB_APP'
@@ -304,21 +304,120 @@ Explore this snapshot at https://app.snyk.io/org/getting-started-cli/project/195
 Notifications about newly disclosed issues related to these dependencies will be emailed to you.
 ```
 
-Snyk App should show the following using your --target-reference names
+Snyk App should show the following using your **--target-reference** names
 
 ![alt tag](https://i.ibb.co/RggrPMR/getting-started-6.png)
 
 ### Finding Log4J issue by CVE using JQ filter
 
+- If we wanted to know if Log4J vulnerabilities existed we can simply run a scan as follows
+
+```shell
+$ snyk test | grep log4j
+  Upgrade org.apache.logging.log4j:log4j-core@2.15.0 to org.apache.logging.log4j:log4j-core@2.17.1 to fix
+  ✗ Arbitrary Code Execution [Medium Severity][https://security.snyk.io/vuln/SNYK-JAVA-ORGAPACHELOGGINGLOG4J-2327339] in org.apache.logging.log4j:log4j-core@2.15.0
+    introduced by org.apache.logging.log4j:log4j-core@2.15.0
+  ✗ Denial of Service (DoS) [High Severity][https://security.snyk.io/vuln/SNYK-JAVA-ORGAPACHELOGGINGLOG4J-2321524] in org.apache.logging.log4j:log4j-core@2.15.0
+    introduced by org.apache.logging.log4j:log4j-core@2.15.0
+  ✗ Remote Code Execution (RCE) [Critical Severity][https://security.snyk.io/vuln/SNYK-JAVA-ORGAPACHELOGGINGLOG4J-2320014] in org.apache.logging.log4j:log4j-core@2.15.0
+    introduced by org.apache.logging.log4j:log4j-core@2.15.0
+```
+
+Every open-source vulnerability is tagged with a CVE and CWE so here is how we would get the full JSON output and look for Log4j issues driving off the CVE for example. 
+
+Let's use "CVE-2021-45046: which is one of the vulnerabilities in out output of the scan - [CVE-2021-45046](https://www.cve.org/CVERecord?id=CVE-2021-45046)
+
+- To look for this vuln in the JSON output we qwould run a command as follows "**snyk test --json | jq '.vulnerabilities[] | select(.packageName=="org.apache.logging.log4j:log4j-core")'**"
+
+```shell
+snyk test --json | jq '.vulnerabilities[] | select(.packageName=="org.apache.logging.log4j:log4j-core")'
+{
+  "id": "SNYK-JAVA-ORGAPACHELOGGINGLOG4J-2320014",
+  "title": "Remote Code Execution (RCE)",
+  "CVSSv3": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:H/E:P/RL:O/RC:C",
+  "credit": [
+    "Unknown"
+  ],
+  "semver": {
+    "vulnerable": [
+      "[2.0-beta9,2.3.1)",
+      "[2.4,2.12.2)",
+      "[2.13.0,2.16.0)"
+    ]
+  },
+  "exploit": "Proof of Concept",
+  "fixedIn": [
+    "2.3.1",
+    "2.12.2",
+    "2.16.0"
+  ],
+  "patches": [],
+  "insights": {
+    "triageAdvice": null
+  },
+  "language": "java",
+  "severity": "critical",
+  "cvssScore": 9,
+  "functions": [],
+  "malicious": false,
+  
+  ...
+  
+  "description": "## Overview\n[org.apache.logging.log4j:log4j-core](http://logging.apache.org/log4j/1.2/) is a logging library for Java.\nAffected versions of this package are vulnerable to Arbitrary Code Execution. <br /> **Note:** Even though this vulnerability appears to be related to the [log4Shell vulnerability](https://security.snyk.io/vuln/SNYK-JAVA-ORGAPACHELOGGINGLOG4J-2314720), this vulnerability requires an attacker to have access to modify configurations to be exploitable, which is rarely possible.\r\n\r\nAn attacker with access to modification of logging configuration is able to configure `JDBCAppender` with a data source referencing a JNDI URI - which can execute malicious code.\r\n\r\nIn the fixed versions, `JDBCAppender` is using `JndiManager` and disables JNDI lookups by default (via `log4j2.enableJndiJdbc=false`).\r\n\r\n## Alternative Remediation\r\nIf you have reason to believe your application may be vulnerable and upgrading is not an option, you can either:\r\n\r\n* Disable/remove `JDBCAppender`\r\n* If `JDBCAppender` is used, make sure that it is not configured to use any protocol other than Java\n## Remediation\nUpgrade `org.apache.logging.log4j:log4j-core` to version 2.3.2, 2.12.4, 2.17.1 or higher.\n## References\n- [Apache Security Page](https://logging.apache.org/log4j/2.x/security.html)\n- [GitHub Commit](https://github.com/apache/logging-log4j2/commit/05db5f9527254632b59aed2a1d78a32c5ab74f16)\n- [Jira Issue](https://issues.apache.org/jira/browse/LOG4J2-3293)\n- [Openwall Mail](https://www.openwall.com/lists/oss-security/2021/12/28/1)\n",
+  "epssDetails": {
+    "percentile": "0.92752",
+    "probability": "0.06697",
+    "modelVersion": "v2023.03.01"
+  },
+  "identifiers": {
+    "CVE": [
+      "CVE-2021-44832"
+    ],
+    "CWE": [
+      "CWE-94"
+    ]
+  },
+  "packageName": "org.apache.logging.log4j:log4j-core",
+  "proprietary": false,
+  "creationTime": "2021-12-28T19:42:55.818691Z",
+  "functions_new": [],
+  "alternativeIds": [],
+  "disclosureTime": "2021-12-28T19:42:53Z",
+  "packageManager": "maven",
+  "mavenModuleName": {
+    "groupId": "org.apache.logging.log4j",
+    "artifactId": "log4j-core"
+  },
+  "publicationTime": "2021-12-28T20:17:52Z",
+  "modificationTime": "2022-10-27T01:37:00.538891Z",
+  "socialTrendAlert": false,
+  "severityWithCritical": "medium",
+  "from": [
+    "com.example:snyk-boot-web@0.0.1-SNAPSHOT",
+    "org.apache.logging.log4j:log4j-core@2.15.0"
+  ],
+  "upgradePath": [
+    false,
+    "org.apache.logging.log4j:log4j-core@2.17.1"
+  ],
+  "isUpgradable": true,
+  "isPatchable": false,
+  "name": "org.apache.logging.log4j:log4j-core",
+  "version": "2.15.0"
+}
+```
 
 ## Dockerfile scanning
 
 Scanning a Dockerfile from the CLI
 
-Uploading the results of a Dockerfile scann  to Snyk App
+Uploading the results of a Dockerfile scan to Snyk App
 
 TODO://
 
+## Snyk Code demos
+
+TODO://
 
 <hr />
 Pas Apicella [pas at snyk.io] is a Principal Solution Engineer at Snyk APJ
