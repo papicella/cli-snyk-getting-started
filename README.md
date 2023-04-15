@@ -484,7 +484,135 @@ Notifications about newly disclosed issues related to these dependencies will be
 
 ## Snyk Container demos
 
-TODO://
+The next two examples show how to run a container test and monitor,. You can add ignores, add projects tags as well as set severity-threshold much like open-source scans as detailed below
+
+[Snyk Container test options](https://docs.snyk.io/snyk-cli/commands/container-test)
+
+### Running a container test
+
+- Run a test using a conmand as follows "**snyk container test pasapples/snyk-boot-web:v1**"
+
+```shell
+
+$ snyk container test pasapples/snyk-boot-web:v1
+
+Testing pasapples/snyk-boot-web:v1...
+
+✗ Low severity vulnerability found in util-linux/libuuid1
+  Description: Integer Overflow or Wraparound
+  Info: https://security.snyk.io/vuln/SNYK-DEBIAN10-UTILLINUX-1534833
+  Introduced through: util-linux/libuuid1@2.33.1-0.1, e2fsprogs@1.44.5-1+deb10u3, util-linux/mount@2.33.1-0.1, util-linux/fdisk@2.33.1-0.1, util-linux/libblkid1@2.33.1-0.1, util-linux@2.33.1-0.1, sysvinit/sysvinit-utils@2.93-8, util-linux/bsdutils@1:2.33.1-0.1, util-linux/libfdisk1@2.33.1-0.1, util-linux/libmount1@2.33.1-0.1, util-linux/libsmartcols1@2.33.1-0.1
+  From: util-linux/libuuid1@2.33.1-0.1
+  From: e2fsprogs@1.44.5-1+deb10u3 > util-linux/libuuid1@2.33.1-0.1
+  From: e2fsprogs@1.44.5-1+deb10u3 > util-linux/libblkid1@2.33.1-0.1 > util-linux/libuuid1@2.33.1-0.1
+  and 25 more...
+  
+...
+
+✗ Critical severity vulnerability found in dpkg
+  Description: Directory Traversal
+  Info: https://security.snyk.io/vuln/SNYK-DEBIAN10-DPKG-2847944
+  Introduced through: meta-common-packages@meta
+  From: meta-common-packages@meta > dpkg@1.19.7
+  Fixed in: 1.19.8
+
+
+
+Organization:      apples-demo
+Package manager:   deb
+Project name:      docker-image|pasapples/snyk-boot-web
+Docker image:      pasapples/snyk-boot-web:v1
+Platform:          linux/amd64
+Base image:        openjdk:11.0.13-slim-buster
+Licenses:          enabled
+
+Tested 91 dependencies for known issues, found 101 issues.
+
+Base Image                   Vulnerabilities  Severity
+openjdk:11.0.13-slim-buster  101              9 critical, 18 high, 10 medium, 64 low
+
+Recommendations for base image upgrade:
+
+Minor upgrades
+Base Image                   Vulnerabilities  Severity
+openjdk:11.0.16-slim-buster  91               6 critical, 13 high, 8 medium, 64 low
+
+Alternative image types
+Base Image                      Vulnerabilities  Severity
+openjdk:21-slim-bullseye        48               0 critical, 0 high, 0 medium, 48 low
+openjdk:21-ea-16-slim-bullseye  48               0 critical, 0 high, 0 medium, 48 low
+openjdk:21-ea-14-slim-bullseye  48               0 critical, 0 high, 0 medium, 48 low
+openjdk:21-ea-15-slim-bullseye  48               0 critical, 0 high, 0 medium, 48 low
+
+
+Learn more: https://docs.snyk.io/products/snyk-container/getting-around-the-snyk-container-ui/base-image-detection
+
+-------------------------------------------------------
+
+Testing pasapples/snyk-boot-web:v1...
+
+Tested 41 dependencies for known issues, found 35 issues.
+
+
+Issues to fix by upgrading:
+
+  Upgrade ch.qos.logback:logback-core@1.2.3 to ch.qos.logback:logback-core@1.2.7 to fix
+  ✗ Insufficient Hostname Verification [Medium Severity][https://security.snyk.io/vuln/SNYK-JAVA-CHQOSLOGBACK-1726923] in ch.qos.logback:logback-core@1.2.3
+    introduced by ch.qos.logback:logback-core@1.2.3
+
+...
+
+License issues:
+
+  ✗ Dual license: MPL-2.0, EPL-1.0 (new) [Medium Severity][https://snyk.io/vuln/snyk:lic:maven:com.h2database:h2:(MPL-2.0_OR_EPL-1.0)] in com.h2database:h2@1.4.200
+    introduced by com.h2database:h2@1.4.200
+
+  ✗ EPL-1.0 OR LGPL-2.1 license (new) [Medium Severity][https://snyk.io/vuln/snyk:lic:maven:ch.qos.logback:logback-core:EPL-1.0_OR_LGPL-2.1] in ch.qos.logback:logback-core@1.2.3
+    introduced by ch.qos.logback:logback-core@1.2.3
+
+  ✗ EPL-1.0 OR LGPL-2.1 license (new) [Medium Severity][https://snyk.io/vuln/snyk:lic:maven:ch.qos.logback:logback-classic:EPL-1.0_OR_LGPL-2.1] in ch.qos.logback:logback-classic@1.2.3
+    introduced by ch.qos.logback:logback-classic@1.2.3
+
+
+
+Organization:      apples-demo
+Package manager:   maven
+Target file:       /app
+Project name:      pasapples/snyk-boot-web:v1:/app
+Docker image:      pasapples/snyk-boot-web:v1
+Licenses:          enabled
+
+....
+
+```
+
+### Uploading container test result
+
+- Run a monitor with a command as follows "**snyk container monitor --org=getting-started-cli pasapples/snyk-boot-web:v1**"
+
+```shell
+$ snyk container monitor --org=getting-started-cli pasapples/snyk-boot-web:v1
+
+Monitoring pasapples/snyk-boot-web:v1 (docker-image|pasapples/snyk-boot-web)...
+
+Explore this snapshot at https://app.snyk.io/org/getting-started-cli/project/e4e052ee-2126-4cae-9013-2a2dfe7db1f8/history/e98c3e77-ee78-4201-a8b5-4ab795e554f7
+
+Notifications about newly disclosed issues related to these dependencies will be emailed to you.
+
+
+-------------------------------------------------------
+
+Monitoring pasapples/snyk-boot-web:v1 (docker-image|pasapples/snyk-boot-web:/app)...
+
+Explore this snapshot at https://app.snyk.io/org/getting-started-cli/project/14cb57a6-fcc5-463f-8b34-34ae7c6a873a/history/af202d53-ed2c-450b-8d43-03b75bba9aae
+
+Notifications about newly disclosed issues related to these dependencies will be emailed to you.
+
+```
+
+![alt tag](https://i.ibb.co/CzvVq2v/getting-started-8.png)
+
+_Note: sarif, JSON and HTML output is also available with container scanning like open-source scans allow_
 
 ## Snyk Code demos
 
