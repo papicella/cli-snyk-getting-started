@@ -586,6 +586,10 @@ Licenses:          enabled
 
 ```
 
+To ignore issues using a "**.snyk**" file you can use the CLI to generate the ignores as described here
+
+[Ignore vulnerabilities using Snyk CLI](https://docs.snyk.io/snyk-cli/test-for-vulnerabilities/ignore-vulnerabilities-using-snyk-cli)
+
 ### Uploading container test result
 
 - Run a monitor with a command as follows "**snyk container monitor --org=getting-started-cli pasapples/snyk-boot-web:v1**"
@@ -649,6 +653,10 @@ Summary:
 ```
 
 _Note: sarif, JSON and HTML output is also available with code SAST scanning like open-source scans allow_
+
+To ignore files / directories from code SAST scans follow this guide
+
+[Excluding directories and files from the Snyk Code CLI test](https://docs.snyk.io/scan-application-code/snyk-code/cli-for-snyk-code/excluding-directories-and-files-from-the-snyk-code-cli-test)
 
 ### Converting a code scan to HTML
 
@@ -790,6 +798,10 @@ Report Complete
 ![alt tag](https://i.ibb.co/zst1cCH/getting-started-10.png)
 
 _Note: sarif, JSON and HTML output is also available with IaC scanning like open-source scans allow_
+
+To ignore issues using a "**.snyk**" file you can use the CLI to generate the ignores as described here
+
+[Ignore vulnerabilities using Snyk CLI](https://docs.snyk.io/snyk-cli/test-for-vulnerabilities/ignore-vulnerabilities-using-snyk-cli)
 
 <hr />
 Pas Apicella [pas at snyk.io] is a Principal Solution Engineer at Snyk APJ
