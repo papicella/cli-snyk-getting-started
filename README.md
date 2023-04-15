@@ -308,7 +308,7 @@ Snyk App should show the following using your **--target-reference** names
 
 ![alt tag](https://i.ibb.co/RggrPMR/getting-started-6.png)
 
-### Finding Log4J issue by CVE using JQ filter
+### Finding Log4J issue by Package Name using a JQ filter
 
 - If we wanted to know if Log4J vulnerabilities existed we can simply run a scan as follows
 
@@ -323,14 +323,16 @@ $ snyk test | grep log4j
     introduced by org.apache.logging.log4j:log4j-core@2.15.0
 ```
 
-Every open-source vulnerability is tagged with a CVE and CWE so here is how we would get the full JSON output and look for Log4j issues driving off the CVE for example. 
+Every open-source vulnerability is tagged with a CVE and CWE plus other useful data so here is how we would get the full JSON output and look for Log4j issues driving off the Package Name for example. 
 
-Let's use "CVE-2021-45046: which is one of the vulnerabilities in out output of the scan - [CVE-2021-45046](https://www.cve.org/CVERecord?id=CVE-2021-45046)
+Let's go ahead and find this "CVE-2021-45046: which is one of the vulnerabilities in out output of the scan - [CVE-2021-45046](https://www.cve.org/CVERecord?id=CVE-2021-45046)
 
-- To look for this vuln in the JSON output we qwould run a command as follows "**snyk test --json | jq '.vulnerabilities[] | select(.packageName=="org.apache.logging.log4j:log4j-core")'**"
+This belongs in the current open-source dependancy package named "**org.apache.logging.log4j:log4j-core**"
+
+- To look for this vulnerability in the JSON output we would run a command as follows "**snyk test --json | jq '.vulnerabilities[] | select(.packageName=="org.apache.logging.log4j:log4j-core")'**"
 
 ```shell
-snyk test --json | jq '.vulnerabilities[] | select(.packageName=="org.apache.logging.log4j:log4j-core")'
+$ snyk test --json | jq '.vulnerabilities[] | select(.packageName=="org.apache.logging.log4j:log4j-core")'
 {
   "id": "SNYK-JAVA-ORGAPACHELOGGINGLOG4J-2320014",
   "title": "Remote Code Execution (RCE)",
@@ -409,11 +411,70 @@ snyk test --json | jq '.vulnerabilities[] | select(.packageName=="org.apache.log
 
 ## Dockerfile scanning
 
-Scanning a Dockerfile from the CLI
+### Scanning a Dockerfile from the CLI
 
-Uploading the results of a Dockerfile scan to Snyk App
+The CLI unlike the SCM integration will not sacn a Dockerfile so to do exactly what the SCM integration does, we would run a command as follows "**snyk container test $(cat Dockerfile | head -n 1 | sed -e 's/FROM\ //')**". The aim is is to extract the FROM clause from the Dockerfile. Keep in mind that multi-stage Dockerfiles would require some tweaking to obtain the right FROM clause
 
-TODO://
+```shell
+$ snyk container test $(cat Dockerfile | head -n 1 | sed -e 's/FROM\ //')
+
+Testing openjdk:11.0.13-slim-buster...
+
+✗ Low severity vulnerability found in util-linux/libuuid1
+  Description: Integer Overflow or Wraparound
+  Info: https://security.snyk.io/vuln/SNYK-DEBIAN10-UTILLINUX-1534833
+  Introduced through: util-linux/libuuid1@2.33.1-0.1, e2fsprogs@1.44.5-1+deb10u3, util-linux/mount@2.33.1-0.1, util-linux/fdisk@2.33.1-0.1, util-linux/libblkid1@2.33.1-0.1, util-linux@2.33.1-0.1, sysvinit/sysvinit-utils@2.93-8, util-linux/bsdutils@1:2.33.1-0.1, util-linux/libfdisk1@2.33.1-0.1, util-linux/libmount1@2.33.1-0.1, util-linux/libsmartcols1@2.33.1-0.1
+  From: util-linux/libuuid1@2.33.1-0.1
+  From: e2fsprogs@1.44.5-1+deb10u3 > util-linux/libuuid1@2.33.1-0.1
+  From: e2fsprogs@1.44.5-1+deb10u3 > util-linux/libblkid1@2.33.1-0.1 > util-linux/libuuid1@2.33.1-0.1
+  and 25 more...
+  Image layer: Introduced by your base image (openjdk:11.0.13-slim-buster)
+
+✗ Low severity vulnerability found in util-linux/libuuid1
+  Description: Information Exposure
+  Info: https://security.snyk.io/vuln/SNYK-DEBIAN10-UTILLINUX-2401082
+  Introduced through: util-linux/libuuid1@2.33.1-0.1, e2fsprogs@1.44.5-1+deb10u3, util-linux/mount@2.33.1-0.1, util-linux/fdisk@2.33.1-0.1, util-linux/libblkid1@2.33.1-0.1, util-linux@2.33.1-0.1, sysvinit/sysvinit-utils@2.93-8, util-linux/bsdutils@1:2.33.1-0.1, util-linux/libfdisk1@2.33.1-0.1, util-linux/libmount1@2.33.1-0.1, util-linux/libsmartcols1@2.33.1-0.1
+  From: util-linux/libuuid1@2.33.1-0.1
+  From: e2fsprogs@1.44.5-1+deb10u3 > util-linux/libuuid1@2.33.1-0.1
+  From: e2fsprogs@1.44.5-1+deb10u3 > util-linux/libblkid1@2.33.1-0.1 > util-linux/libuuid1@2.33.1-0.1
+  and 25 more...
+  Image layer: Introduced by your base image (openjdk:11.0.13-slim-buster)
+  
+  ...
+  
+-------------------------------------------------------
+
+Testing openjdk:11.0.13-slim-buster...
+
+Organization:      apples-demo
+Package manager:   maven
+Target file:       /usr/local/openjdk-11/lib
+Project name:      openjdk:11.0.13-slim-buster:/usr/local/openjdk-11/lib
+Docker image:      openjdk:11.0.13-slim-buster
+Licenses:          enabled
+
+✔ Tested openjdk:11.0.13-slim-buster for known issues, no vulnerable paths found.
+
+
+Tested 13 projects, 1 contained vulnerable paths.
+  
+```
+
+### Uploading the results of a Dockerfile scan to Snyk App
+
+To send these results to Snyk App simply replace "test" with "monitor" using a command as follows "**snyk container monitor --org=getting-started-cli --project-name="openjdk:11.0.13-slim-buster"  $(cat Dockerfile | head -n 1 | sed -e 's/FROM\ //')**".
+
+```shell
+$ snyk container monitor --org=getting-started-cli --project-name="openjdk:11.0.13-slim-buster"  $(cat Dockerfile | head -n 1 | sed -e 's/FROM\ //')
+
+Monitoring openjdk:11.0.13-slim-buster (openjdk:11.0.13-slim-buster)...
+
+Explore this snapshot at https://app.snyk.io/org/getting-started-cli/project/be8c0743-21ba-4fd1-ad76-55a417ef1287/history/4146cbcd-5295-46be-add2-3c589d9df523
+
+Notifications about newly disclosed issues related to these dependencies will be emailed to you.
+```
+
+![alt tag](https://i.ibb.co/tZZ5QDF/getting-started-7.png)
 
 ## Snyk Code demos
 
