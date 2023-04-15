@@ -257,7 +257,7 @@ snyk test --org=getting-started-cli | grep h2
     introduced by com.h2database:h2@1.4.200
 ```
 
-- Finally, lets send the results to Snyk APP UI and confirm our H2 vulns have been ignored as we requested
+- Finally, lets send the results to Snyk App UI and confirm our H2 vulnerabilities have been ignored as we requested
 
 ```shell
 $ snyk monitor --project-name="snyk-boot-web-h2-ignores" --org=getting-started-cli --policy-path=./.snyk
@@ -272,6 +272,12 @@ Notifications about newly disclosed issues related to these dependencies will be
 ![alt tag](https://i.ibb.co/qgTcQz5/getting-started-5.png)
 
 ![alt tag](https://i.ibb.co/XkRV6q6/getting-started-4.png)
+
+Note: You can also add key/value pairs to a monitor command to add tags to your monitored projects using something as follows
+
+--project-tags=<TAG>[,<TAG>]...> ie: **--project-tags="app=snyk-boot-web"**
+
+[Project Tags](https://docs.snyk.io/manage-issues/introduction-to-snyk-projects/project-tags)
 
 ### Separate results by branch/version
 
@@ -476,7 +482,15 @@ Notifications about newly disclosed issues related to these dependencies will be
 
 ![alt tag](https://i.ibb.co/tZZ5QDF/getting-started-7.png)
 
+## Snyk Container demos
+
+TODO://
+
 ## Snyk Code demos
+
+TODO://
+
+## Snyk IaC demos
 
 TODO://
 
