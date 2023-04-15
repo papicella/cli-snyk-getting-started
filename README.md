@@ -1,6 +1,8 @@
 # Getting Started with Snyk CLI
 
-This guide is provided as a quick reference to getting started with Snyk CLI. We will use an existing repository during a set of tests we run showing how to perform common tasks with Snyk
+This guide is provided as a quick reference to getting started with Snyk CLI. We will use an existing repository during a set of tests we run showing how to perform common tasks with the Snyk CLI
+
+_Note: This does not attempt to replace the Snyk Docs which go into far more details but instead aid in a quick start with the snyk CLI_ 
 
 ## Step 1 - Installing the CLI
 
