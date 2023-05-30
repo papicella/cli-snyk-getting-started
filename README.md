@@ -673,7 +673,50 @@ $ snyk code test --json | snyk-to-html -o snyk-boot-web-sast-result.html
 Vulnerability snapshot saved at snyk-boot-web-sast-result.html
 ```
 
+### Publishing CLI results to a Snyk Project
+
+Note: This is a closed BETA so please let your SE know if you want this enabled
+
+- Run the following command to publish CLI results to Snyk App
+
+```shell
+$ snyk code test --report --project-name="snyk-boot-web-code-monitor" --org=getting-started-cli --remote-repo-url="https://github.com/papicella/snyk-boot-web"
+
+Testing /Users/pasapicella/snyk/customers/anz/woolworths/training-sessions/demo/snyk-boot-web ...
+
+ ✗ [High] SQL Injection
+   ID: 90c0854c-9a27-4e78-9ece-9b6f0f44786e
+   Path: src/main/java/com/example/snykbootweb/jdbc/CustomerRest.java, line 29
+   Info: Unsanitized input from the request URL flows into query, where it is used in an SQL query. This may result in an SQL Injection vulnerability.
+
+ ✗ [High] Use of Hardcoded, Security-relevant Constants
+   ID: 041b735c-46ad-432b-bf75-421b9a78f260
+   Path: src/main/java/com/example/snykbootweb/DatabaseService.java, line 8
+   Info: Avoid hardcoding values that are meant to be secret. Found hardcoded secret.
+
+
+✔ Test completed
+
+Organization:      getting-started-cli
+Test type:         Static code analysis
+Project path:      /Users/pasapicella/snyk/customers/anz/woolworths/training-sessions/demo/snyk-boot-web
+
+Summary:
+
+  2 Code issues found
+  2 [High]
+
+Code Report Complete
+
+Your test results are available at:
+https://app.snyk.io/org/getting-started-cli/project/...../history/....
+```
+
 ![alt tag](https://i.ibb.co/107GNLv/getting-started-9.png)
+
+More information is here [Publishing CLI results to a Snyk Project](https://docs.snyk.io/scan-application-code/snyk-code/cli-for-snyk-code/publishing-cli-results-to-a-snyk-project-and-ignoring-cli-results)
+
+![alt tag](https://i.ibb.co/Qb6vH4Z/getting-started-11.png)
 
 ## Snyk IaC demos
 
@@ -768,7 +811,7 @@ Tip
   New: Share your test results in the Snyk Web UI with the option --report
 ```
 
-### Sendf a report of an IaC scan of a terraform template to Snyk App UI
+### Send a report of an IaC scan of a terraform template to Snyk App UI
 
 - Run a command as follows "snyk iac test ./terraform/main.tf --report --org=getting-started-cli"
 
