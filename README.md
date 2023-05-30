@@ -712,8 +712,6 @@ Your test results are available at:
 https://app.snyk.io/org/getting-started-cli/project/...../history/....
 ```
 
-![alt tag](https://i.ibb.co/107GNLv/getting-started-9.png)
-
 More information is here [Publishing CLI results to a Snyk Project](https://docs.snyk.io/scan-application-code/snyk-code/cli-for-snyk-code/publishing-cli-results-to-a-snyk-project-and-ignoring-cli-results)
 
 ![alt tag](https://i.ibb.co/Qb6vH4Z/getting-started-11.png)
