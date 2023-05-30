@@ -21,7 +21,7 @@ $ snyk --version
 - Click on the Settings tab for your organization as shown below
 - Make a note of your organization ID or name 
 
-![alt tag](https://i.ibb.co/wYT04Z1/getting-started-1.png)
+![alt tag](https://i.ibb.co/KVFfFSG/getting-started-1.png)
 
 In these examples the ORG = "**getting-started-cli**"
 
