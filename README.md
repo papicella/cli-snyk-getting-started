@@ -425,6 +425,94 @@ $ snyk test --json | jq '.vulnerabilities[] | select(.packageName=="org.apache.l
 }
 ```
 
+### Generating an SBOM from a snyk scan
+
+The snyk sbom command generates an SBOM for a local software project in an ecosystem supported by Snyk. Supported formats include CycloneDX v1.4 (JSON or XML) and SPDX v2.3 (JSON). An SBOM can be generated for all supported Open Source package managers as well as unmanaged software projects.
+
+- Run a command as follows
+
+```shell
+$ snyk sbom --format=spdx2.3+json --file=pom.xml | jq
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "com.example:snyk-boot-web@0.0.1-SNAPSHOT",
+  "documentNamespace": "https://snyk.io/spdx/sbom-",
+  "creationInfo": {
+    "licenseListVersion": "3.19",
+    "creators": [
+      "Tool: Snyk Open Source",
+      "Organization: Snyk"
+    ],
+    "created": "2023-06-12T10:17:56Z"
+  },
+  "packages": [
+    {
+      "name": "com.example:snyk-boot-web",
+      "SPDXID": "SPDXRef-1-com.example-snyk-boot-web-0.0.1-SNAPSHOT",
+      "versionInfo": "0.0.1-SNAPSHOT",
+      "downloadLocation": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:maven/com.example/snyk-boot-web@0.0.1-SNAPSHOT"
+        }
+      ]
+    },
+    {
+      "name": "com.h2database:h2",
+      "SPDXID": "SPDXRef-2-com.h2database-h2-1.4.200",
+      "versionInfo": "1.4.200",
+      "downloadLocation": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:maven/com.h2database/h2@1.4.200"
+        }
+      ]
+    },
+    {
+      "name": "org.apache.logging.log4j:log4j-api",
+      "SPDXID": "SPDXRef-3-org.apache.logging.log4j-log4j-api-2.13.3",
+      "versionInfo": "2.13.3",
+      "downloadLocation": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:maven/org.apache.logging.log4j/log4j-api@2.13.3"
+        }
+      ]
+    },
+    
+....
+
+    {
+      "spdxElementId": "SPDXRef-35-org.springframework.boot-spring-boot-starter-tomcat-2.3.10.RELEASE",
+      "relatedSpdxElement": "SPDXRef-41-org.springframework.boot-spring-boot-starter-web-2.3.10.RELEASE",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-37-org.springframework-spring-web-5.2.14.RELEASE",
+      "relatedSpdxElement": "SPDXRef-41-org.springframework.boot-spring-boot-starter-web-2.3.10.RELEASE",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-40-org.springframework-spring-webmvc-5.2.14.RELEASE",
+      "relatedSpdxElement": "SPDXRef-41-org.springframework.boot-spring-boot-starter-web-2.3.10.RELEASE",
+      "relationshipType": "DEPENDENCY_OF"
+    }
+  ]
+}
+
+```
+
 ## Dockerfile scanning
 
 ### Scanning a Dockerfile from the CLI
