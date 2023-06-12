@@ -9,11 +9,11 @@ _Note: This does not attempt to replace the Snyk Docs which go into far more det
 - Install the Snyk CLI using the instructions here https://docs.snyk.io/snyk-cli/install-the-snyk-cli
 - AUTH with Snyk CLI https://docs.snyk.io/snyk-cli/commands/auth
 
-Verify you are ready to use the CLI as shown below
+Verify you are ready to use the CLI as shown below. Ensure you are runing version "**1.1177.0**" or later
 
 ```shell
 $ snyk --version
-1.1114.0
+1.1177.0
 ```
 
 ## Step 2 - Obtain your ORG ID and name from snyk settings 
@@ -48,10 +48,14 @@ _Note: change into the "**snyk-boot-web**" folder before running the next series
 
 ### Display all issues
 
-- Run the "**snyk test**" command as shown below
+- Run the "**snyk test**" command as shown below. You will need to install maven and install the dependancies using "mvn install" prior to running this scan. You can use any repo such as a NodeJS repository which would mean the commands would still work just some steps can't be followed further on
+
+Example repo you could use if you don't wish to use a java project
+
+[Goof NodeJS Repository](https://github.com/papicella/goof)
 
 ```shell
-snyk test
+$ snyk test
 
 Testing /Users/pasapicella/snyk/SE/getting-started/snyk-boot-web...
 
